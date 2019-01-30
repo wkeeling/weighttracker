@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 from django.test import TestCase
 
 from track.models import WeightMeasurement, WeightRecord
@@ -24,7 +25,9 @@ class HomePageTest(TestCase):
         WeightMeasurement.objects.create(weight_record=user1_record, weight=74.6)
         WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
 
+        expected_html = render_to_string('home.html')
+
         response = self.client.get('/track/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertInHTML('<title>Weight Tracker - Home</title>', response.content.decode())
+        self.assertMultiLineEqual(response.content.decode(), expected_html)
