@@ -13,12 +13,19 @@ class WeightRecord(models.Model):
 
 class WeightMeasurement(models.Model):
 
+    UNITS = [
+        ('kg', 'Kg'),
+        ('stone', 'Stone')
+    ]
+
     weight_record = models.ForeignKey(WeightRecord, on_delete=models.CASCADE)
-    weight_kg = models.FloatField()
+    weight = models.FloatField()
+    unit = models.CharField(max_length=10, choices=UNITS, default='kg')
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return 'WeightMeasurement: {} kg taken on {}'.format(
-            self.weight_kg,
+        return 'WeightMeasurement: {} {} taken on {}'.format(
+            self.weight,
+            self.unit,
             self.created
         )
