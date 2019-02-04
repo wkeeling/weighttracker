@@ -18,7 +18,7 @@ class WeightMeasurement(models.Model):
         ('stone', 'Stone')
     ]
 
-    weight_record = models.ForeignKey(WeightRecord, on_delete=models.CASCADE)
+    weight_record = models.ForeignKey(WeightRecord, on_delete=models.CASCADE, related_name='measurements')
     weight = models.FloatField()
     unit = models.CharField(max_length=10, choices=UNITS, default='kg')
     created = models.DateTimeField(auto_now_add=True)
@@ -29,3 +29,6 @@ class WeightMeasurement(models.Model):
             self.unit,
             self.created
         )
+
+    class Meta:
+        ordering = ['created']
