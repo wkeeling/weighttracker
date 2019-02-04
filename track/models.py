@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class WeightRecord(models.Model):
 
     person = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return 'WeightRecord: {}'.format(self.person.username)
@@ -21,7 +21,7 @@ class WeightMeasurement(models.Model):
     weight_record = models.ForeignKey(WeightRecord, on_delete=models.CASCADE, related_name='measurements')
     weight = models.FloatField()
     unit = models.CharField(max_length=10, choices=UNITS, default='kg')
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return 'WeightMeasurement: {} {} taken on {}'.format(
