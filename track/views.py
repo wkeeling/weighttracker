@@ -14,12 +14,11 @@ def chart(request):
 
         for record in WeightRecord.objects.all():
             name = '{} {}'.format(record.person.first_name, record.person.last_name)
-            measurements = []
+            name = name.strip()
+            data[name] = []
 
             for measurement in record.measurements.all():
-                measurements.append((measurement.weight, measurement.unit))
-
-            data[name.strip()] = measurements
+                data[name].append({'x': measurement.created, 'y': measurement.weight})
 
         return JsonResponse(data)
 
