@@ -42,7 +42,7 @@ class HomePageTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         user1_data = data['User1']
-        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1233])
+        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1])
         user2_data = data['User 2']
         self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
 
