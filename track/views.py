@@ -28,7 +28,7 @@ def chart(request):
 
                 if measurement.unit != requested_unit:
                     weight = CONVERT[requested_unit](weight)
-                    
+
                 data[name].append({'x': measurement.created, 'y': weight})
 
         return JsonResponse(data)
