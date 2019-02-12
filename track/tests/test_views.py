@@ -28,15 +28,6 @@ class HomePageTest(TestCase):
         self.assertMultiLineEqual(response.content.decode(), expected_html)
 
     def test_renders_chart_data(self):
-        user1 = User.objects.create(username='user1', first_name='User1')
-        user2 = User.objects.create(username='user2', first_name='User', last_name='2')
-        user1_record = WeightRecord.objects.create(person=user1)
-        user2_record = WeightRecord.objects.create(person=user2)
-        WeightMeasurement.objects.create(weight_record=user1_record, weight=74.6)
-        WeightMeasurement.objects.create(weight_record=user1_record, weight=11.2, unit='stone')
-        WeightMeasurement.objects.create(weight_record=user2_record, weight=81.5)
-        WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
-
         response = self.client.get('/track/chart/')
         data = json.loads(response.content.decode('utf-8'))
 
@@ -47,6 +38,21 @@ class HomePageTest(TestCase):
         self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
 
     def test_renders_chart_data_specifying_unit(self):
+        response = self.client.get('/track/chart/?unit=stone')
+        data = json.loads(response.content.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        user1_data = data['User1']
+        self.assertEqual([v['y'] for v in user1_data], [11.7, 11.2])
+        user2_data = data['User 2']
+        self.assertEqual([v['y'] for v in user2_data], [12.8, 12.9])
+
+    def test_renders_chart_data_400_when_post(self):
+        response = self.client.post('/track/chart/')
+
+        self.assertEqual(response.status_code, 400)
+
+    def setUp(self):
         user1 = User.objects.create(username='user1', first_name='User1')
         user2 = User.objects.create(username='user2', first_name='User', last_name='2')
         user1_record = WeightRecord.objects.create(person=user1)
@@ -55,17 +61,3 @@ class HomePageTest(TestCase):
         WeightMeasurement.objects.create(weight_record=user1_record, weight=11.2, unit='stone')
         WeightMeasurement.objects.create(weight_record=user2_record, weight=81.5)
         WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
-
-        response = self.client.get('/track/chart/?unit=stone')
-        data = json.loads(response.content.decode('utf-8'))
-
-        self.assertEqual(response.status_code, 200)
-        user1_data = data['User1']
-        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1])
-        user2_data = data['User 2']
-        self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
-
-    def test_renders_chart_data_400_when_post(self):
-        response = self.client.post('/track/chart/')
-
-        self.assertEqual(response.status_code, 400)

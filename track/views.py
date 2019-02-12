@@ -1,3 +1,5 @@
+import operator
+
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
@@ -7,9 +9,9 @@ from track.models import WeightRecord
 def home_page(request):
     return render(request, 'home.html')
 
-CONVERT = {
-    'kg': lambda weight: round(weight / 0.157473, ndigits=1),
-    'stone': lambda weight: round(weight * 6.350293, ndigits=1)
+OPERATOR = {
+    'kg': operator.truediv,
+    'stone': operator.mul
 }
 
 
@@ -27,7 +29,7 @@ def chart(request):
                 weight = measurement.weight
 
                 if measurement.unit != requested_unit:
-                    weight = CONVERT[requested_unit](weight)
+                    weight = round(OPERATOR[requested_unit](weight, 0.157473), ndigits=1)
 
                 data[name].append({'x': measurement.created, 'y': weight})
 
