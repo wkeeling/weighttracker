@@ -3,15 +3,48 @@
 {% block title_text %}Home{% endblock %}
 
 {% block content %}
-<ul class="nav nav-pills">
-  <li class="nav-item">
-    <a class="nav-link active" href="{% url 'home' %}">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Data</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Add Measurement</a>
-  </li>
-</ul>
+    <div class="row">
+        <div class="col">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Data</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Add Measurement</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <canvas id="weight_chart" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            var ctx = $('#weight_chart').get(0).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        data: [10, 20, 30, 40, 50, 60],
+                        fill: false
+                    }],
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}
