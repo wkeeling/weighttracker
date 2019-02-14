@@ -8,7 +8,7 @@ class WeightRecord(models.Model):
     created = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return 'WeightRecord: {}'.format(self.person.username)
+        return self.person.username
 
 
 class WeightMeasurement(models.Model):
@@ -24,7 +24,7 @@ class WeightMeasurement(models.Model):
     created = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return 'WeightMeasurement: {} {} taken on {}'.format(
+        return '{} {} taken on {}'.format(
             self.weight,
             self.unit,
             self.created
