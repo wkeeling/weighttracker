@@ -20,30 +20,33 @@
     </div>
     <div class="row">
         <div class="col">
-            <canvas id="weight_chart" width="400" height="400"></canvas>
+            <canvas id="weight_chart"></canvas>
         </div>
     </div>
     <script>
         $(function() {
-            var ctx = $('#weight_chart').get(0).getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        data: [10, 20, 30, 40, 50, 60],
-                        fill: false
-                    }],
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
+            $.get('/track/chart/').done(function(data) {
+                var ctx = $('#weight_chart').get(0).getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            data: [10, 20, 30, 40, 50, 60],
+                            fill: false,
+                            borderColor: '#ff5351'
+                        }],
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
                     }
-                }
+                });
             });
         });
     </script>
