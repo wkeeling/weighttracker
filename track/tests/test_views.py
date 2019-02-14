@@ -27,6 +27,9 @@ class HomePageTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertMultiLineEqual(response.content.decode(), expected_html)
 
+
+class ChartTest(TestCase):
+
     def test_renders_chart_data(self):
         response = self.client.get('/track/chart/')
         data = json.loads(response.content.decode('utf-8'))
@@ -61,3 +64,4 @@ class HomePageTest(TestCase):
         WeightMeasurement.objects.create(weight_record=user1_record, weight=11.2, unit='stone')
         WeightMeasurement.objects.create(weight_record=user2_record, weight=81.5)
         WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
+
