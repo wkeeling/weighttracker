@@ -1,3 +1,5 @@
+import operator
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -11,6 +13,12 @@ class WeightRecord(models.Model):
         return self.person.username
 
 
+OPERATOR = {
+    'kg': operator.truediv,
+    'stone': operator.mul
+}
+
+
 class WeightMeasurement(models.Model):
 
     UNITS = [
@@ -22,6 +30,15 @@ class WeightMeasurement(models.Model):
     weight = models.FloatField()
     unit = models.CharField(max_length=10, choices=UNITS, default='kg')
     created = models.DateField(auto_now_add=True)
+
+    def weight_as(self, unit):
+        if unit not in OPERATOR:
+            unit = 'kg'
+
+        if unit == self.unit:
+            return self.weight
+
+        return round(OPERATOR[unit](self.weight, 0.157473), ndigits=1)
 
     def __str__(self):
         return '{} {} taken on {}'.format(
