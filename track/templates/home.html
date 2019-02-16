@@ -19,15 +19,25 @@
         </div>
     </div>
     <div class="row">
+        <div class="col">
+            &#160;
+        </div>
+    </div>
+    <div class="row">
         <div class="col text-center">
             <div id="units" class="btn-group btn-group-toggle center" data-toggle="buttons">
-                <label class="btn btn-outline-secondary btn-sm active">
-                    <input type="radio" name="units" id="kg" value="kg">Kg</input>
+                <label class="btn btn-outline-secondary btn-sm">
+                    <input type="radio" name="units" id="kg" value="kg">&#160;Kg&#160;</input>
                 </label>
                 <label class="btn btn-outline-secondary btn-sm">
                     <input type="radio" name="units" id="stone" value="stone">Stone</input>
                 </label>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            &#160;
         </div>
     </div>
     <div class="row">
@@ -45,31 +55,66 @@
 
             function drawChart(unit) {
                 $.get('/track/chart/', {'unit': unit}).done(function(data) {
-                    var ctx = $('#weight_chart').get(0).getContext('2d');
+                    let ctx = $('#weight_chart').get(0).getContext('2d');
+                    let datasets = [];
+
+                    for (let person in data) {
+                        let dataset = {
+                            label: person,
+                            data: data[person].map(function(val) {
+                                // Convert each date string to a Javascript Date object
+                                return {x: new Date(val.x), y: val.y}
+                            }),
+                            fill: false,
+                            borderColor: '#ff5351',
+                            tension: 0.2
+                        };
+                        datasets.push(dataset);
+                    }
+
                     new Chart(ctx, {
                         type: 'line',
                         data: {
-                            datasets: [{
-                                data: [10, 20, 30, 40, 50, 60],
-                                fill: false,
-                                borderColor: '#ff5351'
-                            }],
-                            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                            datasets: datasets,
                         },
                         options: {
                             scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day',
+                                        displayFormats: {
+                                            day: 'D MMM YYYY'
+                                        }
+                                    }
+                                }],
                                 yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
+                                    scaleLabel: {
+                                        labelString: unit,
+                                        display: true,
+                                        fontSize: 16
                                     }
                                 }]
+                            },
+                            legend: {
+                                labels: {
+                                    fontSize: 14
+                                }
                             }
                         }
                     });
+
+                    window.history.pushState(null, document.getElementsByTagName("title")[0].innerHTML, '/track/?unit=' + unit);
                 });
             }
 
-            drawChart('kg');
+            const params = new URLSearchParams(window.location.search);
+            let unit = params.get('unit') || 'kg';
+            let radio = $('#' + unit);
+            radio.prop('checked', true);
+            radio.parent('label').addClass('active');
+
+            drawChart(unit);
         });
     </script>
 {% endblock %}
