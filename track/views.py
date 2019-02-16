@@ -9,6 +9,7 @@ from track.models import WeightRecord
 def home_page(request):
     return render(request, 'home.html')
 
+
 OPERATOR = {
     'kg': operator.truediv,
     'stone': operator.mul
@@ -18,7 +19,9 @@ OPERATOR = {
 def chart(request):
     if request.method == 'GET':
         data = {}
-        requested_unit = request.GET.get('unit', 'kg')
+        requested_unit = request.GET.get('unit')
+        if requested_unit not in OPERATOR:
+            requested_unit = 'kg'
 
         for record in WeightRecord.objects.all():
             name = '{} {}'.format(record.person.first_name, record.person.last_name)

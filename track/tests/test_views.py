@@ -30,7 +30,7 @@ class HomePageTest(TestCase):
 
 class ChartTest(TestCase):
 
-    def test_renders_chart_data(self):
+    def test_renders_chart(self):
         response = self.client.get('/track/chart/')
         data = json.loads(response.content.decode('utf-8'))
 
@@ -40,7 +40,7 @@ class ChartTest(TestCase):
         user2_data = data['User 2']
         self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
 
-    def test_renders_chart_data_specifying_unit(self):
+    def test_renders_chart_specifying_unit(self):
         response = self.client.get('/track/chart/?unit=stone')
         data = json.loads(response.content.decode('utf-8'))
 
@@ -49,6 +49,26 @@ class ChartTest(TestCase):
         self.assertEqual([v['y'] for v in user1_data], [11.7, 11.2])
         user2_data = data['User 2']
         self.assertEqual([v['y'] for v in user2_data], [12.8, 12.9])
+
+    def test_renders_chart_kg_when_unit_invalid(self):
+        response = self.client.get('/track/chart/?unit=foo')
+        data = json.loads(response.content.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        user1_data = data['User1']
+        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1])
+        user2_data = data['User 2']
+        self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
+
+    def test_renders_chart_kg_when_unit_empty(self):
+        response = self.client.get('/track/chart/?unit=')
+        data = json.loads(response.content.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        user1_data = data['User1']
+        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1])
+        user2_data = data['User 2']
+        self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
 
     def test_renders_chart_data_400_when_post(self):
         response = self.client.post('/track/chart/')
