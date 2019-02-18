@@ -107,6 +107,8 @@ class DataTest(TestCase):
 
     def setUp(self):
         user1 = User.objects.create(username='user1', first_name='User1')
+        user1.set_password('password')
+        user1.save()
         user2 = User.objects.create(username='user2', first_name='User', last_name='2')
         user1_record = WeightRecord.objects.create(person=user1)
         user2_record = WeightRecord.objects.create(person=user2)
@@ -114,3 +116,5 @@ class DataTest(TestCase):
         WeightMeasurement.objects.create(weight_record=user1_record, weight=11.2, unit='stone')
         WeightMeasurement.objects.create(weight_record=user2_record, weight=81.5)
         WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
+
+        self.client.login(username=user1.username, password='password')

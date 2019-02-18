@@ -36,15 +36,17 @@ class DataView(ListView):
         return WeightMeasurement.objects.filter(
             weight_record=WeightRecord.objects.get(person=self.request.user))
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
         unit = self.request.GET.get('unit')
         measurements = []
 
-        for measurement in object_list:
+        for measurement in data['object_list']:
             measurements.append({
                 'weight': measurement.weight_as(unit),
                 'created': measurement.created,
                 'unit': unit
             })
 
-        return {'obj_list': measurements}
+        data['object_list'] = measurements
+        return data
