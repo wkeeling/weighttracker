@@ -93,6 +93,18 @@ class DataTest(TestCase):
 
         self.assertTemplateUsed(response, 'data.html')
 
+    def test_renders_data_kg(self):
+        response = self.client.get('/track/data/?unit=kg')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('74.6&#160;kg', response.content.decode())
+
+    def test_renders_data_stone(self):
+        response = self.client.get('/track/data/?unit=stone')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('11.7&#160;stone', response.content.decode())
+
     def setUp(self):
         user1 = User.objects.create(username='user1', first_name='User1')
         user2 = User.objects.create(username='user2', first_name='User', last_name='2')

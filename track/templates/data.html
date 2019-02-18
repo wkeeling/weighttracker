@@ -4,6 +4,18 @@
 
 {% block content %}
     <div class="row">
+        <div class="col text-center">
+            <div id="units" class="btn-group btn-group-toggle center" data-toggle="buttons">
+                <label class="btn btn-outline-secondary btn-sm">
+                    <input type="radio" name="units" id="kg" value="kg">&#160;Kg&#160;</input>
+                </label>
+                <label class="btn btn-outline-secondary btn-sm">
+                    <input type="radio" name="units" id="stone" value="stone">Stone</input>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col">
             &#160;
         </div>
@@ -19,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for measurement in object_list reversed %}
+                {% for measurement in object_list %}
                     <tr>
                         <th scope="row">{{ forloop.revcounter }}</th>
                         <td>{{ measurement.weight }}&#160;{{ measurement.unit }}</td>
@@ -30,4 +42,19 @@
             </table>
         </div>
     </div>
+    <script>
+        $(function() {
+            $('.btn').button();
+
+            $('#units :input').change(function() {
+                window.location.href = '/track/data/?unit=' + ($(this).val());
+            });
+
+            const params = new URLSearchParams(window.location.search);
+            let unit = params.get('unit') || 'kg';
+            let radio = $('#' + unit);
+            radio.prop('checked', true);
+            radio.parent('label').addClass('active');
+        });
+    </script>
 {% endblock %}
