@@ -86,7 +86,7 @@ class ChartTest(TestCase):
         WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
 
 
-class DataTest(TestCase):
+class MyDataViewTest(TestCase):
 
     def test_uses_correct_template(self):
         response = self.client.get('/track/data/')

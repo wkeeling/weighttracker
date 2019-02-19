@@ -27,7 +27,7 @@ def chart(request):
     return HttpResponse(status=400, reason='Only GET requests are allowed')
 
 
-class DataView(ListView):
+class MyDataView(LoginRequiredMixin, ListView):
 
     model = WeightMeasurement
     template_name = 'data.html'
