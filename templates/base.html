@@ -20,13 +20,13 @@
                 <div class="col">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                            <a class="nav-link{% if not page %} active{% endif %}" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'data' %}">My Data</a>
+                            <a class="nav-link{% if page == 'data' %} active{% endif %}" href="{% url 'data' %}">My Data</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Add Measurement</a>
+                            <a class="nav-link{% if page == 'add' %} active{% endif %}" href="#">Add Measurement</a>
                         </li>
                     </ul>
                 </div>
