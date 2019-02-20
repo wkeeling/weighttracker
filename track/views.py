@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.views.generic import CreateView
 from django.views.generic.list import ListView
 
 from track.models import WeightMeasurement, WeightRecord
@@ -52,3 +53,10 @@ class MyDataView(LoginRequiredMixin, ListView):
 
         data['object_list'] = measurements
         return data
+
+
+class AddMeasurementView(LoginRequiredMixin, CreateView):
+
+    model = WeightMeasurement
+    fields = ['weight', 'unit']
+    template_name = 'add.html'
