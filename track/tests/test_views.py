@@ -131,5 +131,5 @@ class AddMeasurementViewTest(TestCase):
         user1 = User.objects.create(username='user1', first_name='User1')
         user1.set_password('password')
         user1.save()
-        
+
         self.client.login(username=user1.username, password='password')

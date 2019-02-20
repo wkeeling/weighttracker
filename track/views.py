@@ -32,7 +32,7 @@ def chart(request):
 class MyDataView(LoginRequiredMixin, ListView):
 
     model = WeightMeasurement
-    template_name = 'data.html'
+    template_name = 'mydata.html'
 
     def get_queryset(self):
         return WeightMeasurement.objects.filter(
@@ -40,7 +40,7 @@ class MyDataView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['page'] = 'data'
+        data['page'] = 'mydata'
         unit = self.request.GET.get('unit')
         measurements = []
 
