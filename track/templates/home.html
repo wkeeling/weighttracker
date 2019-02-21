@@ -34,7 +34,7 @@
             });
 
             function drawChart(unit) {
-                $.get('/track/chart/', {'unit': unit}).done(function(data) {
+                $.get("{% url 'chart' %}", {'unit': unit}).done(function(data) {
                     let ctx = $('#weight_chart').get(0).getContext('2d');
                     let datasets = [];
 
