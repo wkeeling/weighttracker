@@ -42,7 +42,7 @@ class MyDataView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['page'] = 'mydata'
-        unit = self.request.GET.get('unit')
+        unit = self.request.GET.get('unit', 'kg')
         measurements = []
 
         for measurement in data['object_list']:
