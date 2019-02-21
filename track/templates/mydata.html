@@ -47,7 +47,7 @@
             $('.btn').button();
 
             $('#units :input').change(function() {
-                window.location.href = '/track/data/?unit=' + ($(this).val());
+                window.location.href = "{% url 'mydata' %}?unit=" + ($(this).val());
             });
 
             const params = new URLSearchParams(window.location.search);
