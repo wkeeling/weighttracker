@@ -60,9 +60,14 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
     model = WeightMeasurement
     fields = ['weight', 'unit']
     template_name = 'add.html'
+    success_url = '/track/'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['page'] = 'add'
 
         return data
+
+    def form_valid(self, form):
+        form.instance.weight_record = WeightRecord.objects.get(person=self.request.user)
+        return super().form_valid(form)
