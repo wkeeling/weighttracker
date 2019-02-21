@@ -147,6 +147,17 @@ class AddMeasurementViewTest(TestCase):
 
         self.assertRedirects(response, '/track/')
 
+    def test_submit_form_creates_data(self):
+        WeightRecord.objects.create(person=self.user1)
+        data = {
+            'weight': 74.5,
+            'unit': 'kg'
+        }
+        self.client.post('/track/add/', data=data)
+
+        self.assertEquals(WeightMeasurement.objects.all()[0].weight, 74.5)
+        self.assertEquals(WeightMeasurement.objects.all()[0].unit, 'kg')
+
     def test_submit_form_multiple_same_day(self):
         pass
 
