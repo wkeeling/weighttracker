@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 from django.views.generic.list import ListView
 
-from track.models import WeightMeasurement, WeightRecord
+from .models import WeightMeasurement, WeightRecord
 
 
 def home_page(request):
