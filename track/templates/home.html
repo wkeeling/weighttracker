@@ -84,7 +84,7 @@
                         }
                     });
 
-                    window.history.pushState(null, document.getElementsByTagName("title")[0].innerHTML, '/track/?unit=' + unit);
+                    window.history.pushState(null, document.getElementsByTagName("title")[0].innerHTML, "{% url 'home' %}?unit=" + unit);
                 });
             }
 
