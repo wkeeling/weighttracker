@@ -89,18 +89,23 @@ class ChartTest(TestCase):
 class MyDataViewTest(TestCase):
 
     def test_uses_correct_template(self):
-        response = self.client.get('/track/data/')
+        response = self.client.get('/track/mydata/')
 
-        self.assertTemplateUsed(response, 'data.html')
+        self.assertTemplateUsed(response, 'mydata.html')
+
+    def test_menu_item_selected(self):
+        response = self.client.get('/track/mydata/')
+
+        self.assertIn('active" href="/track/mydata/"', response.content.decode())
 
     def test_renders_data_kg(self):
-        response = self.client.get('/track/data/?unit=kg')
+        response = self.client.get('/track/mydata/?unit=kg')
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('74.6&#160;kg', response.content.decode())
 
     def test_renders_data_stone(self):
-        response = self.client.get('/track/data/?unit=stone')
+        response = self.client.get('/track/mydata/?unit=stone')
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('11.7&#160;stone', response.content.decode())
@@ -126,6 +131,11 @@ class AddMeasurementViewTest(TestCase):
         response = self.client.get('/track/add/')
 
         self.assertTemplateUsed(response, 'add.html')
+
+    def test_menu_item_selected(self):
+        response = self.client.get('/track/add/')
+
+        self.assertIn('active" href="/track/add/"', response.content.decode())
 
     def setUp(self):
         user1 = User.objects.create(username='user1', first_name='User1')

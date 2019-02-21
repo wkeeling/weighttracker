@@ -60,3 +60,9 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
     model = WeightMeasurement
     fields = ['weight', 'unit']
     template_name = 'add.html'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['page'] = 'add'
+
+        return data
