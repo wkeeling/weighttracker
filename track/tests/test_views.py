@@ -137,9 +137,22 @@ class AddMeasurementViewTest(TestCase):
 
         self.assertIn('active" href="/track/add/"', response.content.decode())
 
-    def setUp(self):
-        user1 = User.objects.create(username='user1', first_name='User1')
-        user1.set_password('password')
-        user1.save()
+    def test_submit_form_redirects(self):
+        WeightRecord.objects.create(person=self.user1)
+        data = {
+            'weight': 74.5,
+            'unit': 'kg'
+        }
+        response = self.client.post('/track/add/', data=data)
 
-        self.client.login(username=user1.username, password='password')
+        self.assertRedirects(response, '/track/')
+
+    def test_submit_form_multiple_same_day(self):
+        pass
+
+    def setUp(self):
+        self.user1 = User.objects.create(username='user1', first_name='User1')
+        self.user1.set_password('password')
+        self.user1.save()
+
+        self.client.login(username=self.user1.username, password='password')
