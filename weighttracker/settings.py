@@ -112,3 +112,6 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_URL = '/login/'
+
+# Set cookie max age to 1 year
+SESSION_COOKIE_AGE = 31536000
