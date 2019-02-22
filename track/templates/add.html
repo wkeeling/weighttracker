@@ -3,6 +3,7 @@
 {% block title_text %}Add Measurement{% endblock %}
 
 {% block content %}
+    {% if show_form %}
     <form method="POST">
         <div class="row">
             <div class="col">
@@ -21,4 +22,11 @@
             </div>
         </div>
     </form>
+    {% else %}
+        <div class="row">
+            <div class="col">
+                Only one measurement can be submitted per day
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

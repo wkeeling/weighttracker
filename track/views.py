@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -66,6 +68,14 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['page'] = 'add'
+        data['show_form'] = True
+
+        latest = WeightMeasurement.objects.filter(
+            weight_record=WeightRecord.objects.get(person=self.request.user)
+        )
+
+        if latest and latest[0].created == date.today():
+            data['show_form'] = False
 
         return data
 

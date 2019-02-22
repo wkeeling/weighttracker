@@ -138,7 +138,6 @@ class AddMeasurementViewTest(TestCase):
         self.assertIn('active" href="/track/add/"', response.content.decode())
 
     def test_submit_form_redirects(self):
-        WeightRecord.objects.create(person=self.user1)
         data = {
             'weight': 74.5,
             'unit': 'kg'
@@ -148,21 +147,28 @@ class AddMeasurementViewTest(TestCase):
         self.assertRedirects(response, '/track/')
 
     def test_submit_form_creates_data(self):
-        weight_record = WeightRecord.objects.create(person=self.user1)
         data = {
             'weight': 74.5,
             'unit': 'kg'
         }
-        self.client.post('/track/add/', data=data)
+        self.client.post('/track/add/', data=data, follow=True)
 
         measurements = WeightMeasurement.objects.all()
         self.assertEqual(len(measurements), 1)
         self.assertEqual(measurements[0].weight, 74.5)
         self.assertEqual(measurements[0].unit, 'kg')
-        self.assertEqual(measurements[0].weight_record, weight_record)
+        self.assertEqual(measurements[0].weight_record, self.weight_record)
 
-    def test_submit_form_multiple_same_day(self):
-        pass
+    def test_submit_form_same_day(self):
+        data = {
+            'weight': 74.5,
+            'unit': 'kg'
+        }
+        self.client.post('/track/add/', data=data, follow=True)
+
+        response = self.client.get('/track/add/')
+
+        self.assertContains(response, 'Only one measurement can be submitted per day')
 
     def setUp(self):
         self.user1 = User.objects.create(username='user1', first_name='User1')
@@ -170,3 +176,5 @@ class AddMeasurementViewTest(TestCase):
         self.user1.save()
 
         self.client.login(username=self.user1.username, password='password')
+
+        self.weight_record = WeightRecord.objects.create(person=self.user1)
