@@ -18,13 +18,13 @@ OPERATOR = {
     'stone': operator.mul
 }
 
+UNITS = [
+    ('kg', 'Kg'),
+    ('stone', 'Stone')
+]
+
 
 class WeightMeasurement(models.Model):
-
-    UNITS = [
-        ('kg', 'Kg'),
-        ('stone', 'Stone')
-    ]
 
     weight_record = models.ForeignKey(WeightRecord, on_delete=models.CASCADE, related_name='measurements')
     weight = models.FloatField()
@@ -49,3 +49,13 @@ class WeightMeasurement(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+
+class Profile(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    preferred_unit = models.CharField(max_length=10, choices=UNITS, default='kg')
+    preferred_colour = models.CharField(max_length=20, default='#ff6666')
+
+    def __str__(self):
+        return '{} profile'.format(self.user.username)
