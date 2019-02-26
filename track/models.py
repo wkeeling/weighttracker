@@ -53,7 +53,7 @@ class WeightMeasurement(models.Model):
 
 class Profile(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     preferred_unit = models.CharField(max_length=10, choices=UNITS, default='kg')
     preferred_colour = models.CharField(max_length=20, default='#ff6666')
 
