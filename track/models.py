@@ -52,6 +52,8 @@ class WeightMeasurement(models.Model):
 
 
 class Profile(models.Model):
+    # Note that it may be better to have this in a dedicated app (e.g. "account")
+    # with a different URL path than /track/.
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     preferred_unit = models.CharField(max_length=10, choices=UNITS, default='kg')

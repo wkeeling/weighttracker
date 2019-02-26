@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">
+                <div class="col-10">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
                             <a class="nav-link{% if not page %} active{% endif %}" href="{% url 'home' %}">Home</a>
@@ -28,6 +28,13 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{% if page == 'add' %} active{% endif %}" href="{% url 'add' %}">Add Measurement</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-2">
+                    <ul class="nav nav-pills float-right">
+                        <li class="nav-item">
+                            <a class="nav-link{% if page == 'profile' %} active{% endif %}" href="{% url 'profile' %}">Profile</a>
                         </li>
                     </ul>
                 </div>

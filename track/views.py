@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.list import ListView
 
-from .models import WeightMeasurement, WeightRecord
+from .models import Profile, WeightMeasurement, WeightRecord
 
 
 def home_page(request):
@@ -82,3 +82,7 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.weight_record = WeightRecord.objects.get(person=self.request.user)
         return super().form_valid(form)
+
+
+def profile_view(request, user_id=None):
+    return render(request, 'profile.html')

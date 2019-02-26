@@ -178,3 +178,18 @@ class AddMeasurementViewTest(TestCase):
         self.client.login(username=self.user1.username, password='password')
 
         self.weight_record = WeightRecord.objects.create(person=self.user1)
+
+
+class ProfileViewTest(TestCase):
+
+    def test_uses_correct_template(self):
+        response = self.client.get('/track/profile/12345/', follow=True)
+
+        self.assertTemplateUsed(response, 'profile.html')
+
+    def setUp(self):
+        self.user1 = User.objects.create(username='user1', first_name='User1')
+        self.user1.set_password('password')
+        self.user1.save()
+
+        self.client.login(username=self.user1.username, password='password')
