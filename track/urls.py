@@ -9,5 +9,4 @@ urlpatterns = [
     path('mydata/', track.views.MyDataView.as_view(), name='mydata'),
     path('add/', track.views.AddMeasurementView.as_view(), name='add'),
     path('profile/', track.views.profile_view, name='profile'),
-    path('profile/<int:user_id>/', track.views.profile_view, name='profile'),
 ]

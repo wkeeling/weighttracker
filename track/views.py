@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.list import ListView
 
+from .forms import ProfileForm
 from .models import Profile, WeightMeasurement, WeightRecord
 
 
@@ -84,8 +85,18 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-def profile_view(request, user_id=None):
+def profile_view(request):
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user, preferred_colour='#ff6666', preferred_unit='kg')
+        profile.save()
+
+    if request.method == 'GET':
+        form = ProfileForm(instance=profile)
+
     context = {
-        'page': 'profile'
+        'page': 'profile',
+        'form': form
     }
     return render(request, 'profile.html', context)

@@ -183,14 +183,21 @@ class AddMeasurementViewTest(TestCase):
 class ProfileViewTest(TestCase):
 
     def test_uses_correct_template(self):
-        response = self.client.get('/track/profile/12345/', follow=True)
+        response = self.client.get('/track/profile/', follow=True)
 
         self.assertTemplateUsed(response, 'profile.html')
 
     def test_menu_item_selected(self):
-        response = self.client.get('/track/profile/12345/')
+        response = self.client.get('/track/profile/')
 
         self.assertIn('active" href="/track/profile/"', response.content.decode())
+
+    def test_creates_profile_when_not_exists(self):
+        self.client.get('/track/profile/')
+
+        profile = self.user1.profile
+        self.assertEqual(profile.preferred_unit, 'kg')
+        self.assertEqual(profile.preferred_colour, '#ff6666')
 
     def setUp(self):
         self.user1 = User.objects.create(username='user1', first_name='User1')
