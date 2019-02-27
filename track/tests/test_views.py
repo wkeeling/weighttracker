@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.test import TestCase
 
-from track.models import WeightMeasurement, WeightRecord
+from track.models import Profile, WeightMeasurement, WeightRecord
 
 
 class HomePageTest(TestCase):
@@ -198,6 +198,14 @@ class ProfileViewTest(TestCase):
         profile = self.user1.profile
         self.assertEqual(profile.preferred_unit, 'kg')
         self.assertEqual(profile.preferred_colour, '#ff6666')
+
+    def test_uses_existing_profile(self):
+        existing = Profile(user=self.user1, preferred_colour='#123456', preferred_unit='stone')
+        self.client.get('/track/profile/')
+
+        profile = self.user1.profile
+        self.assertEqual(profile.preferred_unit, existing.preferred_unit)
+        self.assertEqual(profile.preferred_colour, existing.preferred_colour)
 
     def setUp(self):
         self.user1 = User.objects.create(username='user1', first_name='User1')

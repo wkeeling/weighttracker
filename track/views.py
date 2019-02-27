@@ -99,4 +99,5 @@ def profile_view(request):
         'page': 'profile',
         'form': form
     }
+
     return render(request, 'profile.html', context)
