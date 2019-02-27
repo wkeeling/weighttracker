@@ -85,4 +85,7 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
 
 
 def profile_view(request, user_id=None):
-    return render(request, 'profile.html')
+    context = {
+        'page': 'profile'
+    }
+    return render(request, 'profile.html', context)

@@ -187,6 +187,11 @@ class ProfileViewTest(TestCase):
 
         self.assertTemplateUsed(response, 'profile.html')
 
+    def test_menu_item_selected(self):
+        response = self.client.get('/track/profile/12345/')
+
+        self.assertIn('active" href="/track/profile/"', response.content.decode())
+
     def setUp(self):
         self.user1 = User.objects.create(username='user1', first_name='User1')
         self.user1.set_password('password')

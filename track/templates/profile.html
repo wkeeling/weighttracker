@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title_text %}Profile{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <div class="row">
+        <div class="col">
+            {{ form.as_table }}
+            {% csrf_token %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            &#160;
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="submit" value="Submit" />
+        </div>
+    </div>
+</form>
+{% endblock %}
