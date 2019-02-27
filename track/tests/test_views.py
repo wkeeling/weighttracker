@@ -201,11 +201,21 @@ class ProfileViewTest(TestCase):
 
     def test_uses_existing_profile(self):
         existing = Profile(user=self.user1, preferred_colour='#123456', preferred_unit='stone')
+        existing.save()
         self.client.get('/track/profile/')
 
         profile = self.user1.profile
         self.assertEqual(profile.preferred_unit, existing.preferred_unit)
         self.assertEqual(profile.preferred_colour, existing.preferred_colour)
+
+    def test_update_profile(self):
+        existing = Profile(user=self.user1, preferred_colour='#123456', preferred_unit='stone')
+        existing.save()
+        self.client.post('/track/profile/', data={'preferred_unit': 'stone', 'preferred_colour': '#ff6666'})
+
+        profile = self.user1.profile
+        self.assertEqual(profile.preferred_unit, 'stone')
+        self.assertEqual(profile.preferred_colour, '#ff6666')
 
     def setUp(self):
         self.user1 = User.objects.create(username='user1', first_name='User1')
