@@ -214,6 +214,7 @@ class ProfileViewTest(TestCase):
         self.client.post('/track/profile/', data={'preferred_unit': 'stone', 'preferred_colour': '#ff6666'})
 
         profile = self.user1.profile
+        profile.refresh_from_db()
         self.assertEqual(profile.preferred_unit, 'stone')
         self.assertEqual(profile.preferred_colour, '#ff6666')
 

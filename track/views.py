@@ -94,6 +94,11 @@ def profile_view(request):
 
     if request.method == 'GET':
         form = ProfileForm(instance=profile)
+    elif request.method == 'POST':
+        form = ProfileForm(instance=profile, data=request.POST)
+        form.save()
+    else:
+        return HttpResponse(status=405)  # Method not allowed
 
     context = {
         'page': 'profile',
