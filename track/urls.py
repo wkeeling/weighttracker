@@ -8,5 +8,5 @@ urlpatterns = [
     path('chart/', track.views.chart, name='chart'),
     path('mydata/', track.views.MyDataView.as_view(), name='mydata'),
     path('add/', track.views.AddMeasurementView.as_view(), name='add'),
-    path('profile/', track.views.profile_view, name='profile'),
+    path('settings/', track.views.settings_view, name='settings'),
 ]

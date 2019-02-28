@@ -9,7 +9,7 @@ from django.views.generic import CreateView
 from django.views.generic.list import ListView
 
 from .forms import ProfileForm
-from .models import Profile, WeightMeasurement, WeightRecord
+from .models import Settings, WeightMeasurement, WeightRecord
 
 
 def home_page(request):
@@ -87,24 +87,24 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
 
 
 @login_required
-def profile_view(request):
+def settings_view(request):
     try:
-        profile = request.user.profile
-    except Profile.DoesNotExist:
-        profile = Profile(user=request.user, preferred_colour='#ff6666', preferred_unit='kg')
-        profile.save()
+        settings = request.user.settings
+    except Settings.DoesNotExist:
+        settings = Settings(user=request.user, preferred_colour='#ff6666', preferred_unit='kg')
+        settings.save()
 
     if request.method == 'GET':
-        form = ProfileForm(instance=profile)
+        form = ProfileForm(instance=settings)
     elif request.method == 'POST':
-        form = ProfileForm(instance=profile, data=request.POST)
+        form = ProfileForm(instance=settings, data=request.POST)
         form.save()
     else:
         return HttpResponse(status=405)  # Method not allowed
 
     context = {
-        'page': 'profile',
+        'page': 'settings',
         'form': form
     }
 
-    return render(request, 'profile.html', context)
+    return render(request, 'settings.html', context)

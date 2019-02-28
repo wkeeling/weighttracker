@@ -51,7 +51,7 @@ class WeightMeasurement(models.Model):
         ordering = ['-created']
 
 
-class Profile(models.Model):
+class Settings(models.Model):
     # Note that it may be better to have this in a dedicated app (e.g. "account")
     # with a different URL path than /track/.
 
@@ -60,4 +60,4 @@ class Profile(models.Model):
     preferred_colour = models.CharField(max_length=20, default='#ff6666')
 
     def __str__(self):
-        return '{} profile'.format(self.user.username)
+        return '{} settings'.format(self.user.username)

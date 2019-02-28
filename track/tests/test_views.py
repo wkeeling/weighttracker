@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.test import TestCase
 
-from track.models import Profile, WeightMeasurement, WeightRecord
+from track.models import Settings, WeightMeasurement, WeightRecord
 
 
 class HomePageTest(TestCase):
@@ -180,46 +180,46 @@ class AddMeasurementViewTest(TestCase):
         self.weight_record = WeightRecord.objects.create(person=self.user1)
 
 
-class ProfileViewTest(TestCase):
+class SettingsViewTest(TestCase):
 
     def test_uses_correct_template(self):
-        response = self.client.get('/track/profile/', follow=True)
+        response = self.client.get('/track/settings/', follow=True)
 
-        self.assertTemplateUsed(response, 'profile.html')
+        self.assertTemplateUsed(response, 'settings.html')
 
     def test_menu_item_selected(self):
-        response = self.client.get('/track/profile/')
+        response = self.client.get('/track/settings/')
 
-        self.assertIn('active" href="/track/profile/"', response.content.decode())
+        self.assertIn('active" href="/track/settings/"', response.content.decode())
 
-    def test_creates_profile_when_not_exists(self):
-        self.client.get('/track/profile/')
+    def test_creates_settings_when_not_exists(self):
+        self.client.get('/track/settings/')
 
-        profile = self.user1.profile
-        self.assertEqual(profile.preferred_unit, 'kg')
-        self.assertEqual(profile.preferred_colour, '#ff6666')
+        settings = self.user1.settings
+        self.assertEqual(settings.preferred_unit, 'kg')
+        self.assertEqual(settings.preferred_colour, '#ff6666')
 
-    def test_uses_existing_profile(self):
-        existing = Profile(user=self.user1, preferred_colour='#123456', preferred_unit='stone')
+    def test_uses_existing_settings(self):
+        existing = Settings(user=self.user1, preferred_colour='#123456', preferred_unit='stone')
         existing.save()
-        self.client.get('/track/profile/')
+        self.client.get('/track/settings/')
 
-        profile = self.user1.profile
-        self.assertEqual(profile.preferred_unit, existing.preferred_unit)
-        self.assertEqual(profile.preferred_colour, existing.preferred_colour)
+        settings = self.user1.settings
+        self.assertEqual(settings.preferred_unit, existing.preferred_unit)
+        self.assertEqual(settings.preferred_colour, existing.preferred_colour)
 
-    def test_update_profile(self):
-        existing = Profile(user=self.user1, preferred_colour='#123456', preferred_unit='stone')
+    def test_update_settings(self):
+        existing = Settings(user=self.user1, preferred_colour='#123456', preferred_unit='stone')
         existing.save()
-        self.client.post('/track/profile/', data={'preferred_unit': 'stone', 'preferred_colour': '#ff6666'})
+        self.client.post('/track/settings/', data={'preferred_unit': 'stone', 'preferred_colour': '#ff6666'})
 
-        profile = self.user1.profile
-        profile.refresh_from_db()
-        self.assertEqual(profile.preferred_unit, 'stone')
-        self.assertEqual(profile.preferred_colour, '#ff6666')
+        settings = self.user1.settings
+        settings.refresh_from_db()
+        self.assertEqual(settings.preferred_unit, 'stone')
+        self.assertEqual(settings.preferred_colour, '#ff6666')
 
     def test_method_not_allowed(self):
-        response = self.client.patch('/track/profile/')
+        response = self.client.patch('/track/settings/')
 
         self.assertEqual(response.status_code, 405)
 
