@@ -218,6 +218,11 @@ class ProfileViewTest(TestCase):
         self.assertEqual(profile.preferred_unit, 'stone')
         self.assertEqual(profile.preferred_colour, '#ff6666')
 
+    def test_method_not_allowed(self):
+        response = self.client.patch('/track/profile/')
+
+        self.assertEqual(response.status_code, 405)
+
     def setUp(self):
         self.user1 = User.objects.create(username='user1', first_name='User1')
         self.user1.set_password('password')
