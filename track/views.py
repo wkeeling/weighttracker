@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -85,6 +86,7 @@ class AddMeasurementView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@login_required
 def profile_view(request):
     try:
         profile = request.user.profile
