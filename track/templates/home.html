@@ -55,7 +55,7 @@
                     new Chart(ctx, {
                         type: 'line',
                         data: {
-                            datasets: datasets,
+                            datasets: datasets
                         },
                         options: {
                             scales: {
@@ -89,7 +89,7 @@
             }
 
             const params = new URLSearchParams(window.location.search);
-            let unit = params.get('unit') || 'kg';
+            let unit = params.get('unit') || {% if request.user.is_authenticated %} '{{ request.user.settings.preferred_unit }}' {% else %} 'kg' {% endif %};
             let radio = $('#' + unit);
             radio.prop('checked', true);
             radio.parent('label').addClass('active');
