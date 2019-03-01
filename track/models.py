@@ -41,7 +41,8 @@ class WeightMeasurement(models.Model):
         return round(OPERATOR[unit](self.weight, 0.157473), ndigits=1)
 
     def __str__(self):
-        return '{} {} taken on {}'.format(
+        return '[{}] {} {} taken on {}'.format(
+            self.weight_record,
             self.weight,
             self.unit,
             self.created
