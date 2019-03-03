@@ -58,7 +58,7 @@ class MyDataView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['page'] = 'mydata'
-        unit = self.request.GET.get('unit', 'kg')
+        unit = self.request.GET.get('unit', self._get_preferred_unit())
         measurements = []
 
         for measurement in data['object_list']:
@@ -70,6 +70,12 @@ class MyDataView(LoginRequiredMixin, ListView):
 
         data['object_list'] = measurements
         return data
+
+    def _get_preferred_unit(self):
+        try:
+            return self.request.user.settings.preferred_unit
+        except Settings.DoesNotExist:
+            return 'kg'
 
 
 class AddMeasurementView(LoginRequiredMixin, CreateView):

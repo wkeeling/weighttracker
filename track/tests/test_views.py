@@ -121,6 +121,19 @@ class MyDataViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('11.7&#160;stone', response.content.decode())
 
+    def test_renders_data_preferred_unit(self):
+        response = self.client.get('/track/mydata/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('11.2&#160;stone', response.content.decode())
+
+    def test_renders_data_no_settings(self):
+        Settings.objects.all().delete()
+        response = self.client.get('/track/mydata/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('74.6&#160;kg', response.content.decode())
+
     def setUp(self):
         user1 = User.objects.create(username='user1', first_name='User1')
         user1.set_password('password')
@@ -132,6 +145,7 @@ class MyDataViewTest(TestCase):
         WeightMeasurement.objects.create(weight_record=user1_record, weight=11.2, unit='stone')
         WeightMeasurement.objects.create(weight_record=user2_record, weight=81.5)
         WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
+        Settings.objects.create(user=user1, preferred_unit='stone')
 
         self.client.login(username=user1.username, password='password')
 
