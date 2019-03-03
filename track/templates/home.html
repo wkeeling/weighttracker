@@ -40,7 +40,7 @@
 
                     for (let person in data) {
                         let dataset = {
-                            label: person,
+                            label: person.split(/(\s+)/)[0],
                             data: data[person].map(function(val) {
                                 // Convert each date string to a Javascript Date object
                                 return {x: new Date(val.x), y: val.y}
