@@ -11,7 +11,7 @@
         <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     </head>
     <body>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col">
                     &#160;
@@ -21,20 +21,20 @@
                 <div class="col-10">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="small nav-link{% if not page %} active{% endif %}" href="{% url 'home' %}">Home</a>
+                            <a class="nav-link{% if not page %} active{% endif %}" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="small nav-link{% if page == 'mydata' %} active{% endif %}" href="{% url 'mydata' %}">My Data</a>
+                            <a class="nav-link{% if page == 'mydata' %} active{% endif %}" href="{% url 'mydata' %}">My Data</a>
                         </li>
                         <li class="nav-item">
-                            <a class="small nav-link{% if page == 'add' %} active{% endif %}" href="{% url 'add' %}">Add</a>
+                            <a class="nav-link{% if page == 'add' %} active{% endif %}" href="{% url 'add' %}">Add</a>
                         </li>
                     </ul>
                 </div>
                 <div class="col-2">
                     <ul class="nav nav-pills float-right">
                         <li class="nav-item">
-                            <a class="small nav-link{% if page == 'settings' %} active{% endif %}" href="{% url 'settings' %}">Settings</a>
+                            <a class="nav-link{% if page == 'settings' %} active{% endif %}" href="{% url 'settings' %}">Settings</a>
                         </li>
                     </ul>
                 </div>
