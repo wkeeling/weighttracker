@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.list import ListView
 
-from .forms import ProfileForm
+from .forms import SettingsForm
 from .models import Settings, WeightMeasurement, WeightRecord
 
 
@@ -113,9 +113,9 @@ def settings_view(request):
         settings.save()
 
     if request.method == 'GET':
-        form = ProfileForm(instance=settings)
+        form = SettingsForm(instance=settings)
     elif request.method == 'POST':
-        form = ProfileForm(instance=settings, data=request.POST)
+        form = SettingsForm(instance=settings, data=request.POST)
         form.save()
     else:
         return HttpResponse(status=405)  # Method not allowed
