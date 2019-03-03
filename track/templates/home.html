@@ -46,7 +46,7 @@
                                 return {x: new Date(val.x), y: val.y}
                             }),
                             fill: false,
-                            borderColor: '#ff5351',
+                            borderColor: {% if request.user.is_authenticated %}'{{ request.user.settings.preferred_colour }}'{% else %}''{% endif %},
                             tension: 0.2
                         };
                         datasets.push(dataset);
