@@ -36,9 +36,9 @@ class ChartTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         user1_data = data['User1']
-        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1])
+        self.assertEqual([v['y'] for v in user1_data['measurements']], [74.6, 71.1])
         user2_data = data['User 2']
-        self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
+        self.assertEqual([v['y'] for v in user2_data['measurements']], [81.5, 82.2])
 
     def test_renders_chart_specifying_unit(self):
         response = self.client.get('/track/chart/?unit=stone')
@@ -46,9 +46,9 @@ class ChartTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         user1_data = data['User1']
-        self.assertEqual([v['y'] for v in user1_data], [11.7, 11.2])
+        self.assertEqual([v['y'] for v in user1_data['measurements']], [11.7, 11.2])
         user2_data = data['User 2']
-        self.assertEqual([v['y'] for v in user2_data], [12.8, 12.9])
+        self.assertEqual([v['y'] for v in user2_data['measurements']], [12.8, 12.9])
 
     def test_renders_chart_kg_when_unit_invalid(self):
         response = self.client.get('/track/chart/?unit=foo')
@@ -56,9 +56,9 @@ class ChartTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         user1_data = data['User1']
-        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1])
+        self.assertEqual([v['y'] for v in user1_data['measurements']], [74.6, 71.1])
         user2_data = data['User 2']
-        self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
+        self.assertEqual([v['y'] for v in user2_data['measurements']], [81.5, 82.2])
 
     def test_renders_chart_kg_when_unit_empty(self):
         response = self.client.get('/track/chart/?unit=')
@@ -66,9 +66,19 @@ class ChartTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         user1_data = data['User1']
-        self.assertEqual([v['y'] for v in user1_data], [74.6, 71.1])
+        self.assertEqual([v['y'] for v in user1_data['measurements']], [74.6, 71.1])
         user2_data = data['User 2']
-        self.assertEqual([v['y'] for v in user2_data], [81.5, 82.2])
+        self.assertEqual([v['y'] for v in user2_data['measurements']], [81.5, 82.2])
+
+    def test_renders_chart_preferred_colour(self):
+        response = self.client.get('/track/chart/')
+        data = json.loads(response.content.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        user1_data = data['User1']
+        self.assertEqual(user1_data['colour'], '#3385ff')
+        user2_data = data['User 2']
+        self.assertEqual(user2_data['colour'], '')
 
     def test_renders_chart_data_400_when_post(self):
         response = self.client.post('/track/chart/')
@@ -84,6 +94,7 @@ class ChartTest(TestCase):
         WeightMeasurement.objects.create(weight_record=user1_record, weight=11.2, unit='stone')
         WeightMeasurement.objects.create(weight_record=user2_record, weight=81.5)
         WeightMeasurement.objects.create(weight_record=user2_record, weight=82.2)
+        Settings.objects.create(user=user1, preferred_colour='#3385ff')
 
 
 class MyDataViewTest(TestCase):

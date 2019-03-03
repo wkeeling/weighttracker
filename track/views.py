@@ -24,14 +24,26 @@ def chart(request):
         for record in WeightRecord.objects.all():
             name = '{} {}'.format(record.person.first_name, record.person.last_name)
             name = name.strip()
-            weight_data[name] = []
+            weight_data[name] = {
+                'colour': _get_preferred_colour(record),
+                'measurements': []
+            }
 
             for measurement in record.measurements.all():
-                weight_data[name].append({'x': measurement.created, 'y': measurement.weight_as(unit)})
+                weight_data[name]['measurements'].append(
+                    {'x': measurement.created, 'y': measurement.weight_as(unit)}
+                )
 
         return JsonResponse(weight_data)
 
     return HttpResponse(status=400, reason='Only GET requests are allowed')
+
+
+def _get_preferred_colour(record):
+    try:
+        return record.person.settings.preferred_colour
+    except Settings.DoesNotExist:
+        return ''
 
 
 class MyDataView(LoginRequiredMixin, ListView):

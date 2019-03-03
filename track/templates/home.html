@@ -41,12 +41,12 @@
                     for (let person in data) {
                         let dataset = {
                             label: person.split(/(\s+)/)[0],
-                            data: data[person].map(function(val) {
+                            data: data[person]['measurements'].map(function(val) {
                                 // Convert each date string to a Javascript Date object
                                 return {x: new Date(val.x), y: val.y}
                             }),
                             fill: false,
-                            borderColor: {% if request.user.is_authenticated %}'{{ request.user.settings.preferred_colour }}'{% else %}''{% endif %},
+                            borderColor: data[person]['colour'],
                             tension: 0.2
                         };
                         datasets.push(dataset);
