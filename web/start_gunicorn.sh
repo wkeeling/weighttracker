@@ -22,7 +22,8 @@ ARGS="${DJANGO_WSGI_MODULE}:application \
   --log-level info \
   --bind=0.0.0.0:$PORT \
   --timeout $TIMEOUT \
-  --limit-request-line 0
+  --limit-request-line 0 \
+  --reload
 "
 
 # Start your Django Unicorn
