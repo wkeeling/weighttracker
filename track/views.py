@@ -64,7 +64,7 @@ class MyDataView(LoginRequiredMixin, ListView):
         for measurement in data['object_list']:
             measurements.append({
                 'weight': measurement.weight_as(unit),
-                'created': measurement.created,
+                'created': measurement.created if measurement.created != date.today() else 'Today',
                 'unit': unit
             })
 
